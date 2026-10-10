@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fffdf9">
+<title>SAT Math Desmos Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gaegu:wght@700&family=Quicksand:wght@500;600;700&family=DM+Mono:wght@500&display=swap">
+<style>
+:root{
+  --paper:#fffdf9; --dot:#e7e0ef; --card:#ffffff;
+  --ink:#3b3349; --soft:#716884; --line:#eee7f2;
+  --lav:#ebe1fb; --lav-ink:#7650c2;
+  --blue:#dcebfd; --blue-ink:#3a6fb3;
+  --mint:#d8f3e3; --mint-ink:#2c8457;
+  --butter:#fff0bd; --butter-ink:#9a6c06;
+  --pink:#ffdfe9; --pink-ink:#bf3d69;
+  --peach:#ffe2d1; --peach-ink:#bb5826;
+  --f-title:"Caveat", "Bradley Hand", cursive;
+  --f-head:"Gaegu", "Chalkboard SE", "Comic Sans MS", cursive;
+  --f-body:"Quicksand", "Avenir Next", system-ui, sans-serif;
+  --f-mono:"DM Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink); font-family:var(--f-body); font-weight:500;
+  font-size:16px; line-height:1.55;
+  background:radial-gradient(var(--dot) 1.3px, transparent 1.4px) 0 0/20px 20px, var(--paper);
+  background-color:var(--paper);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.wrap{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:8px 64px}
+header{text-align:center; padding-block:28px 10px}
+header h1{font-family:var(--f-title); font-weight:700; font-size:clamp(2.6rem,9vw,3.6rem); line-height:1; margin:0; text-wrap:balance}
+header h1 span{background:linear-gradient(transparent 58%, var(--pink) 58%); padding-inline:6px}
+header p{margin:10px auto 0; color:var(--soft); max-width:34ch; font-weight:600}
+.legend{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:16px}
+.legend span{font-size:.8rem; font-weight:700; padding:3px 10px; border-radius:99px}
+nav{position:sticky; top:env(safe-area-inset-top,0px); z-index:5; margin-inline:-16px; padding:10px 16px;
+  background:color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  border-bottom:1.5px dashed var(--line); overflow-x:auto; white-space:nowrap; scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{display:inline-block; margin-right:6px; padding:6px 13px; border-radius:99px; text-decoration:none;
+  font-family:var(--f-head); font-size:1.05rem; color:var(--ink); border:1.5px solid transparent}
+nav a:focus-visible, a:focus-visible{outline:2px solid var(--lav-ink); outline-offset:2px}
+.c-lav{--c:var(--lav); --ci:var(--lav-ink)}
+.c-blue{--c:var(--blue); --ci:var(--blue-ink)}
+.c-mint{--c:var(--mint); --ci:var(--mint-ink)}
+.c-butter{--c:var(--butter); --ci:var(--butter-ink)}
+.c-pink{--c:var(--pink); --ci:var(--pink-ink)}
+.c-peach{--c:var(--peach); --ci:var(--peach-ink)}
+nav a.c-lav, nav a.c-blue, nav a.c-mint, nav a.c-butter, nav a.c-pink, nav a.c-peach, .legend span{background:var(--c); color:var(--ci)}
+main{display:flex; flex-direction:column; gap:40px; margin-top:30px}
+.page{position:relative; background:var(--card); border:1.5px solid var(--c); border-radius:18px;
+  padding:34px 20px 22px; box-shadow:0 2px 0 var(--c), 0 10px 24px -18px rgba(59,51,73,.35); scroll-margin-top:70px}
+.page::before{content:""; position:absolute; top:-13px; left:50%; width:118px; height:26px;
+  transform:translateX(-50%) rotate(-2.5deg); background:var(--c); opacity:.9;
+  -webkit-mask:linear-gradient(90deg,transparent 0 4px,#000 4px calc(100% - 4px),transparent 0);
+  mask:linear-gradient(90deg,transparent 0 4px,#000 4px calc(100% - 4px),transparent 0)}
+.page:nth-child(even)::before{transform:translateX(-50%) rotate(2deg)}
+.kicker{font-family:var(--f-title); font-size:1.35rem; color:var(--ci); margin:0}
+.page h2{font-family:var(--f-head); font-weight:700; font-size:clamp(1.9rem,6vw,2.3rem); line-height:1.1; margin:0 0 14px; text-wrap:balance}
+.page h2 span{background:linear-gradient(transparent 55%, var(--c) 55%); padding-inline:4px}
+.page h3{font-family:var(--f-head); font-size:1.45rem; margin:22px 0 6px; color:var(--ci); line-height:1.2}
+.page h3:first-of-type{margin-top:6px}
+p{margin:6px 0}
+ul{margin:4px 0 0; padding-left:1.15em}
+li{margin:5px 0}
+li::marker{color:var(--ci)}
+b, strong{font-weight:700}
+mark{background:var(--c); color:inherit; padding:0 4px; border-radius:4px; font-weight:700}
+code{font-family:var(--f-mono); font-size:.86em; background:#faf8fc; border:1.5px solid var(--c); border-radius:7px; padding:1px 6px; white-space:nowrap; color:var(--ink)}
+.note{margin-top:14px; padding:12px 14px; border-radius:12px; background:var(--c); font-weight:600}
+.note b{color:var(--ci)}
+.warn{color:var(--pink-ink); font-weight:700}
+.moves{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:12px; margin-top:10px}
+.move{display:flex; gap:12px; align-items:flex-start; padding:12px; border:1.5px dashed var(--c); border-radius:14px; min-width:0}
+.num{flex:none; width:36px; height:36px; border-radius:50%; background:var(--c); color:var(--ci);
+  display:grid; place-items:center; font-family:var(--f-head); font-size:1.35rem}
+.move h4{margin:0; font-family:var(--f-head); font-size:1.3rem; line-height:1.15}
+.move p{margin:2px 0 0; font-size:.95rem}
+.move div{min-width:0}
+.rows{display:flex; flex-direction:column; gap:8px; margin-top:8px}
+.row{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; padding:10px 12px; border-radius:12px; background:#fcfaff; border:1.5px solid var(--line)}
+.row .q{flex:1 1 220px; min-width:0}
+.row .a{flex:none; font-family:var(--f-head); font-size:1.12rem; background:var(--c); color:var(--ci); padding:2px 12px; border-radius:99px; white-space:nowrap}
+.row .a.long{white-space:normal; flex:1 1 220px; border-radius:12px; font-family:var(--f-body); font-size:.92rem; font-weight:700; padding:6px 10px}
+.vocab{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr)); gap:10px}
+.vocab div{background:var(--c); border-radius:14px; padding:12px 14px}
+.vocab p{margin:0; font-weight:700}
+.vocab small{display:block; margin-top:4px; color:var(--soft); font-weight:600; font-size:.88rem}
+.spot{display:flex; flex-direction:column; gap:10px}
+.spot div{display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline}
+.spot b{font-family:var(--f-head); font-size:1.2rem; color:var(--ci); min-width:8.5em}
+.spot span{flex:1 1 240px; min-width:0}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:4px 22px}
+.grid2 > div{min-width:0}
+.box{border:1.5px solid var(--c); border-radius:14px; padding:12px 14px; margin-top:12px}
+.box ul{margin-top:2px}
+footer{text-align:center; margin-top:40px; font-family:var(--f-title); font-size:1.6rem; color:var(--soft)}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1><span>SAT Math</span> Notes</h1>
+  <p>Everything you need, the Desmos way. One page at a time.</p>
+  <div class="legend">
+    <span class="c-lav">Desmos</span><span class="c-blue">Algebra</span><span class="c-mint">Advanced</span><span class="c-butter">Data</span><span class="c-pink">Geometry</span><span class="c-peach">Test day</span>
+  </div>
+</header>
+
+<nav aria-label="Sections">
+  <a class="c-lav" href="#basics">Basics</a><a class="c-lav" href="#moves">9 Moves</a><a class="c-lav" href="#see">See This</a><a class="c-lav" href="#spot">Spot It</a><a class="c-blue" href="#algebra">Algebra</a><a class="c-mint" href="#advanced">Advanced</a><a class="c-butter" href="#data">Data</a><a class="c-pink" href="#geo">Geometry</a><a class="c-peach" href="#testday">Test Day</a>
+</nav>
+
+<main>
+
+<section class="page c-lav" id="basics">
+  <p class="kicker">page 1</p>
+  <h2><span>Desmos Basics</span></h2>
+  <ul>
+    <li><mark>Desmos only knows x and y.</mark> Swap every letter: the input becomes <b>x</b>, the output becomes <b>y</b>.<br><small>Example: h = −16t² + 64t → type <code>y=-16x^2+64x</code></small></li>
+    <li><b>Click the gray dots</b> to see exact points.</li>
+    <li><b>Can't see the graph?</b> Zoom out.</li>
+    <li><b>Trig in degrees?</b> Wrench icon → <b>Degrees</b> (or Radians to match the problem).</li>
+    <li><b>Math with no x or y</b> (like <code>48/0.8</code>) just gives you the answer, like a calculator.</li>
+  </ul>
+  <h3>How to type it</h3>
+  <div class="vocab">
+    <div><p><code>^</code> exponent</p><small>x² → <code>x^2</code></small></div>
+    <div><p><code>sqrt()</code> square root</p><small>√(x+7) → <code>sqrt(x+7)</code></small></div>
+    <div><p><code>pi</code> for π</p><small>3π → <code>3pi</code></small></div>
+    <div><p><code>abs()</code> absolute value</p><small>|2x−3| → <code>abs(2x-3)</code></small></div>
+    <div><p><code>&gt;=</code> and <code>&lt;=</code></p><small>for ≥ and ≤</small></div>
+    <div><p><code>~</code> regression</p><small>for "line from points"</small></div>
+  </div>
+</section>
+
+<section class="page c-lav" id="moves">
+  <p class="kicker">page 2</p>
+  <h2><span>The 9 Moves</span></h2>
+  <p>These solve most of the test. Learn them like dance moves.</p>
+  <div class="moves">
+    <div class="move"><span class="num">1</span><div><h4>Solve</h4><p>Type <code>y=left side</code> and <code>y=right side</code>. Click where they cross. The <b>x</b> is your answer.</p></div></div>
+    <div class="move"><span class="num">2</span><div><h4>Zeros</h4><p>Type <code>y=...</code>. Click where it crosses the x-axis.</p></div></div>
+    <div class="move"><span class="num">3</span><div><h4>Min / Max</h4><p>Type <code>y=...</code>. Click the top or bottom tip.</p></div></div>
+    <div class="move"><span class="num">4</span><div><h4>System</h4><p>Type both equations exactly as given. Click where they cross.</p></div></div>
+    <div class="move"><span class="num">5</span><div><h4>Plug In</h4><p>Type <code>f(x)=...</code>, then <code>f(4)</code>.</p></div></div>
+    <div class="move"><span class="num">6</span><div><h4>Slider</h4><p>Unknown letter (k, c, a)? Add a slider and drag until it does what the question says.</p></div></div>
+    <div class="move"><span class="num">7</span><div><h4>Find the Letter</h4><p>Plug in the number you know, <b>swap the letter for x</b>, type <code>y=...</code>, click the x-intercept.</p></div></div>
+    <div class="move"><span class="num">8</span><div><h4>Match</h4><p>Graph the question and each choice. The one that <b>lands exactly on top</b> wins. For number answers, type each choice and compare decimals.</p></div></div>
+    <div class="move"><span class="num">9</span><div><h4>Line from Points</h4><p>Add a table, enter the points, type <code>y_1 ~ mx_1 + b</code>.</p></div></div>
+  </div>
+</section>
+
+<section class="page c-lav" id="see">
+  <p class="kicker">page 3</p>
+  <h2><span>If You See This, Do This</span></h2>
+  <h3>Same thing, different words</h3>
+  <div class="vocab">
+    <div><p>solution = root = zero = x-intercept</p><small>where the graph crosses the x-axis</small></div>
+    <div><p>vertex = minimum = maximum</p><small>the top or bottom tip</small></div>
+    <div><p>y-intercept = initial value = starting amount</p><small>where it crosses the y-axis</small></div>
+    <div><p>equivalent = equal to</p><small>graphs land exactly on top</small></div>
+  </div>
+  <h3>Question words → move</h3>
+  <div class="rows">
+    <div class="row"><span class="q">"solve," "what is x," "value of x"</span><span class="a">1 Solve</span></div>
+    <div class="row"><span class="q">"solution," "root," "zero," "x-intercept"</span><span class="a">2 Zeros</span></div>
+    <div class="row"><span class="q">"minimum," "maximum," "vertex," "highest / lowest point"</span><span class="a">3 Min/Max</span></div>
+    <div class="row"><span class="q">Two equations stacked together</span><span class="a">4 System</span></div>
+    <div class="row"><span class="q">f(3), g(f(2)), "value of the function at..."</span><span class="a">5 Plug In</span></div>
+    <div class="row"><span class="q">"how many solutions," "no solution," "exactly one," "infinitely many"</span><span class="a">6 Slider</span></div>
+    <div class="row"><span class="q">"find k," "find c," "is a factor," "p(3) = 0"</span><span class="a">7 Find Letter</span></div>
+    <div class="row"><span class="q">"equivalent," "equal to," √ or π in the choices</span><span class="a">8 Match</span></div>
+    <div class="row"><span class="q">"line through these points," a table of points</span><span class="a">9 Line</span></div>
+    <div class="row"><span class="q">"Is this point a solution?" (inequalities)</span><span class="a long">Type both + the point. Is it in the dark overlap? A dashed line doesn't count.</span></div>
+    <div class="row"><span class="q">Ball thrown, launched, or dropped</span><span class="a long">Move 3 for max height (the y). Move 2 for when it lands (the right x).</span></div>
+    <div class="row"><span class="q">Circle equation (has x² and y²)</span><span class="a long">Type it. Read the center and radius off the grid.</span></div>
+    <div class="row"><span class="q">Mean, median, spread</span><span class="a long"><code>mean([...])</code> <code>median([...])</code> <code>stdev([...])</code></span></div>
+  </div>
+</section>
+
+<section class="page c-lav" id="spot">
+  <p class="kicker">page 4</p>
+  <h2><span>How to Spot Each Type</span></h2>
+  <div class="spot">
+    <div><b>Quadratic</b><span>Has <mark>x²</mark>, even hidden: (x+2)(x−3), (x−3)², x(x+4). U-shaped graph. Anything thrown or launched. Length × width area problems.</span></div>
+    <div><b>Exponential</b><span>The letter is <mark>up in the exponent</mark>. Words: "% per year," "doubles," "half-life."</span></div>
+    <div><b>Polynomial</b><span>x³ or higher, p(x), the word "factor."</span></div>
+    <div><b>Radical / Rational</b><span>x inside a √, or x on the bottom of a fraction. Use Move 1. Desmos skips fake answers. <b>No crossing = no solution.</b></span></div>
+    <div><b>Function</b><span>f(x) is a <mark>name</mark>, not f times x. "f(3)" on a graph = the y-value at x = 3.</span></div>
+    <div><b>Circle</b><span>Has both x² and y².</span></div>
+    <div><b>Trig</b><span>sin, cos, tan, or a right triangle with lettered corners.</span></div>
+    <div><b>Radians</b><span>An angle with π and no ° symbol.</span></div>
+  </div>
+</section>
+
+<section class="page c-blue" id="algebra">
+  <p class="kicker">unit 1</p>
+  <h2><span>Algebra</span></h2>
+  <div class="grid2">
+    <div>
+      <h3>Lines</h3>
+      <ul>
+        <li>y = <b>m</b>x + <b>b</b></li>
+        <li><mark>m</mark> = the "per" amount (per hour, per month)</li>
+        <li><mark>b</mark> = the start or flat fee</li>
+        <li>C = 30h + 50 → $30 per hour, $50 fee</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Slopes</h3>
+      <ul>
+        <li>Parallel = <b>same slope</b></li>
+        <li>Perpendicular = <b>flip it + change the sign</b><br>2 → −1/2</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Systems</h3>
+      <ul>
+        <li>No solution = <b>parallel</b> lines</li>
+        <li>Infinite solutions = <b>same line</b></li>
+        <li class="warn">Check if they want x + y, not just x!</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Inequalities</h3>
+      <ul>
+        <li>× or ÷ by a negative → <b>flip</b> the sign</li>
+        <li>≥ or ≤ = solid line</li>
+        <li>&gt; or &lt; = dashed line</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box">
+    <h3>Absolute value</h3>
+    <p>Usually <b>2 answers</b>. Type <code>y=abs(2x-3)</code> and <code>y=7</code>, then click both crossings.</p>
+  </div>
+</section>
+
+<section class="page c-mint" id="advanced">
+  <p class="kicker">unit 2</p>
+  <h2><span>Advanced Math</span></h2>
+
+  <h3>Quadratic forms</h3>
+  <div class="rows">
+    <div class="row"><span class="q">y = ax² + bx + c</span><span class="a long">c is the y-intercept</span></div>
+    <div class="row"><span class="q">y = (x − 2)(x + 5)</span><span class="a long">zeros are 2 and −5 (flip signs)</span></div>
+    <div class="row"><span class="q">y = a(x − h)² + k</span><span class="a long">vertex is (h, k) (flip h)</span></div>
+    <div class="row"><span class="q">a is negative</span><span class="a long">opens down, has a maximum</span></div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <h3>How many solutions?</h3>
+      <ul>
+        <li>Crosses the x-axis twice → <b>2</b></li>
+        <li>Just touches → <b>1</b></li>
+        <li>Never touches → <b>0</b></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Exponent rules</h3>
+      <ul>
+        <li>x² · x³ = x⁵ (add)</li>
+        <li>x⁵ / x² = x³ (subtract)</li>
+        <li>(x³)² = x⁶ (multiply)</li>
+        <li>x⁻² = 1/x² (negative = flip)</li>
+        <li>x<sup>1/2</sup> = √x · x<sup>2/3</sup> = ∛(x²)</li>
+        <li>Or just use Move 8!</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Exponential growth &amp; decay</h3>
+    <ul>
+      <li>y = <b>a</b>(<b>b</b>)<sup>t</sup> → a = the start</li>
+      <li><mark>1.04</mark> = grows 4% · <mark>0.85</mark> = shrinks 15%</li>
+      <li>300(2)<sup>t/3</sup> = doubles every 3</li>
+      <li>80(1/2)<sup>t/10</sup> = halves every 10</li>
+      <li>"by <b>50</b> each year" = linear · "by <b>5%</b> each year" = exponential</li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <h3>Factors</h3>
+      <p>(x − 3) is a factor = 3 is a zero = p(3) = 0</p>
+      <p class="warn">Flip the sign!</p>
+    </div>
+    <div>
+      <h3>Moving graphs</h3>
+      <ul>
+        <li>f(x) <b>+ 3</b> → up 3</li>
+        <li>f(x <b>− 3</b>) → <b>right</b> 3 <span class="warn">(backwards!)</span></li>
+        <li>−f(x) → flips upside down</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note"><b>Line + parabola together?</b> Type both and click where they cross (Move 4).</div>
+</section>
+
+<section class="page c-butter" id="data">
+  <p class="kicker">unit 3</p>
+  <h2><span>Data &amp; Problem Solving</span></h2>
+  <div class="grid2">
+    <div>
+      <h3>Percents</h3>
+      <ul>
+        <li>Move the decimal 2 left: 5% = <b>0.05</b>, 150% = <b>1.5</b></li>
+        <li>"Of" means <b>multiply</b></li>
+        <li>30% off → <mark>× 0.7</mark></li>
+        <li>30% increase → <mark>× 1.3</mark></li>
+        <li>Find the original → <b>divide</b> (48 ÷ 0.8)</li>
+        <li>% change = (new − old) ÷ old</li>
+        <li class="warn">+20% then −20% is NOT even: 1.2 × 0.8 = 0.96</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Ratios &amp; rates</h3>
+      <ul>
+        <li>Rate = anything with "per"</li>
+        <li>Same thing on top: flour/sugar = flour/sugar</li>
+        <li>3:5 out of 40 → 3/8 × 40 = 15</li>
+      </ul>
+      <h3>Unit conversions</h3>
+      <ul>
+        <li>Multiply by fractions so units cancel</li>
+        <li>60 mph → ft/sec: <code>60*5280/3600</code> = 88</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Stats words</h3>
+    <ul>
+      <li><b>Mean</b> = average · <b>Median</b> = middle (in order) · <b>Mode</b> = most common · <b>Range</b> = biggest − smallest</li>
+      <li><b>Standard deviation</b> = spread. Clumped = small, spread out = big. Just compare.</li>
+      <li>An outlier moves the <mark>mean</mark> a lot and the median barely</li>
+      <li><mark>Total = mean × count</mark> (for missing-number problems)</li>
+      <li>Frequency 5 = that number appears <b>5 times</b></li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <h3>Reading graphs</h3>
+      <ul>
+        <li>Dot plot: each dot = 1 data point</li>
+        <li>Histogram: bar height = how many</li>
+        <li>Box plot: whisker ends = min &amp; max, box edges = Q1 &amp; Q3, <b>middle line = median</b></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Scatterplots</h3>
+      <ul>
+        <li>Dots go up = positive · down = negative</li>
+        <li>Predict = plug x into the line</li>
+        <li>Slope = "for each 1 more x, y changes by the slope"</li>
+        <li>y-intercept = predicted y when x = 0</li>
+        <li>Actual − predicted = dot minus line</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Probability &amp; tables</h3>
+    <p>What you want ÷ total. If it says <mark>"of the ___"</mark> or <mark>"given ___"</mark>, that group is the bottom number.</p>
+  </div>
+
+  <div class="box">
+    <h3>Studies (pick the most careful answer)</h3>
+    <ul>
+      <li>Random <b>sample</b> → results apply to <b>that group only</b></li>
+      <li>Random <b>assignment</b> → you can say "<b>causes</b>"</li>
+      <li>Neither → only "associated"</li>
+      <li>Bigger sample = smaller margin of error</li>
+      <li>45% ± 3 → really between 42% and 48%</li>
+      <li>Only surveying one kind of person (like gym-goers) = <b>biased</b></li>
+    </ul>
+  </div>
+</section>
+
+<section class="page c-pink" id="geo">
+  <p class="kicker">unit 4</p>
+  <h2><span>Geometry &amp; Trig</span></h2>
+  <div class="note"><b>Use the reference sheet</b> in the test app. It has the area and volume formulas and special triangles.</div>
+
+  <div class="grid2">
+    <div>
+      <h3>Angles</h3>
+      <ul>
+        <li>Line = <b>180</b> · Triangle = <b>180</b> · Around a point = <b>360</b></li>
+        <li>Supplementary = add to 180</li>
+        <li>Complementary = add to 90</li>
+        <li>Vertical angles (X shape) = equal</li>
+        <li>Parallel lines + a line through them: only <b>big</b> and <b>small</b> angles. Big + small = 180.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Triangles</h3>
+      <ul>
+        <li>Hypotenuse: <code>sqrt(a^2+b^2)</code></li>
+        <li>Missing leg: <code>sqrt(c^2-a^2)</code></li>
+        <li>Triples: 3-4-5, 5-12-13, 8-15-17 (and doubles like 6-8-10)</li>
+        <li>30-60-90: x, x√3, <b>2x</b></li>
+        <li>45-45-90: x, x, x√2</li>
+        <li>Isosceles: 2 equal sides = 2 equal angles</li>
+        <li>Equilateral: all angles 60°</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Similar triangles</h3>
+    <ul>
+      <li>Same shape, different size → small/big = small/big</li>
+      <li>Clues: a small triangle inside a big one, shadows, the word "similar"</li>
+      <li>Match letters in order: A↔D, B↔E, C↔F</li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <h3>Area &amp; volume</h3>
+      <ul>
+        <li>Area = flat space (ft²)</li>
+        <li>Volume = 3D space (ft³)</li>
+        <li>Perimeter = distance around</li>
+        <li>Double the sides → area <mark>× 4</mark>, volume <mark>× 8</mark></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Circle parts</h3>
+      <ul>
+        <li>Diameter = 2r</li>
+        <li>Circumference = 2πr</li>
+        <li>Area = πr²</li>
+        <li>Tangent line makes <b>90°</b> with the radius</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Circle equation</h3>
+    <p>(x − h)² + (y − k)² = r²</p>
+    <ul>
+      <li>Center (h, k) with <mark>flipped signs</mark></li>
+      <li>Radius = <b>√ of the right side</b> (25 means r = 5)</li>
+      <li>Messy version? Just type it into Desmos.</li>
+      <li>Arc = (angle/360) × 2πr · Sector = (angle/360) × πr²</li>
+      <li>In radians: arc = r × angle</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h3>Trig: SOH CAH TOA</h3>
+    <ul>
+      <li><b>S</b>in = <b>O</b>pp / <b>H</b>yp · <b>C</b>os = <b>A</b>dj / <b>H</b>yp · <b>T</b>an = <b>O</b>pp / <b>A</b>dj</li>
+      <li>Stand at the angle: Opposite = across, Adjacent = next to, Hypotenuse = longest</li>
+      <li>Opposite and adjacent <b>swap</b> for the other angle</li>
+      <li>No picture? Draw one. cos B = 5/13 → sides 5, 12, 13</li>
+      <li><mark>sin(a) = cos(b) → a + b = 90</mark></li>
+      <li>Know one ratio, need another: <code>sin(arccos(5/13))</code>, then match the decimal</li>
+    </ul>
+  </div>
+
+  <h3>Radians cheat code</h3>
+  <div class="vocab">
+    <div><p>π = 180°</p><small>swap π for 180 to get degrees</small></div>
+    <div><p>2π = 360°</p><small>full circle</small></div>
+    <div><p>π/2 = 90°</p><small>right angle</small></div>
+    <div><p>π/3 = 60° · π/4 = 45° · π/6 = 30°</p><small>the common ones</small></div>
+  </div>
+</section>
+
+<section class="page c-peach" id="testday">
+  <p class="kicker">last page</p>
+  <h2><span>Traps &amp; Test Day</span></h2>
+  <div class="grid2">
+    <div>
+      <h3>Traps</h3>
+      <ul>
+        <li><mark>Read the last line twice.</mark> They often ask for x + y, 2x, or y instead of x.</li>
+        <li>Desmos gives a decimal? Type the answer choices to find the match.</li>
+        <li>Type-in answers: fractions OK (2/3), negatives OK.</li>
+        <li>Radius² = 25 means radius = 5.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Strategy</h3>
+      <ul>
+        <li>2 modules · 22 questions · 35 min each</li>
+        <li>About <b>1.5 minutes</b> per question</li>
+        <li>Stuck? <b>Flag it, guess, move on.</b></li>
+        <li><mark>Never leave a blank.</mark> No penalty for guessing.</li>
+        <li>Practice full tests in <b>Bluebook</b>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>you've got this ♡</footer>
+</div>
+</body>
+</html>
